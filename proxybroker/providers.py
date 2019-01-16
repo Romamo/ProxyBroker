@@ -48,9 +48,8 @@ class Provider:
         # concurrent connections on the current provider
         self._sem_provider = asyncio.Semaphore(max_conn)
         self._loop = loop or asyncio.get_event_loop()
-        self._headers = self.get_headers()
 
-    def get_headers(rv=False):
+    def get_headers(self, rv=False):
         return get_headers(rv)
         
     @property
@@ -378,7 +377,7 @@ class Tools_rosinstrument_com_base(Provider):
         page = unescape(fromCharCodes)
         return self._find_proxies(page)
     
-    def get_headers(rv=True):
+    def get_headers(self, rv=True):
         headers = {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36',  # noqa
             'Accept': '*/*',
