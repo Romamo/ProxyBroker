@@ -11,7 +11,10 @@ import aiohttp
 import async_timeout
 
 from .errors import BadStatusError
-from .utils import log, get_headers, IPPattern, IPPortPatternGlobal
+from .utils import log, 
+
+
+, IPPattern, IPPortPatternGlobal
 
 
 class Provider:
@@ -48,6 +51,9 @@ class Provider:
         self._sem_provider = asyncio.Semaphore(max_conn)
         self._loop = loop or asyncio.get_event_loop()
 
+    def get_headers(rv=False):
+        return get_headers()
+        
     @property
     def proxies(self):
         """Return all found proxies.
@@ -75,7 +81,7 @@ class Provider:
         """
         log.debug('Try to get proxies from %s' % self.domain)
 
-        async with aiohttp.ClientSession(headers=get_headers(),
+        async with aiohttp.ClientSession(headers=self.get_headers(),
                                          cookies=self._cookies,
                                          loop=self._loop) as self._session:
             await self._pipe()
@@ -372,6 +378,16 @@ class Tools_rosinstrument_com_base(Provider):
         fromCharCodes = ''.join([chr(n) for n in toCharCodes])
         page = unescape(fromCharCodes)
         return self._find_proxies(page)
+    
+    def get_headers(rv=False):
+        _rv = str(random.randint(1000, 9999)) if rv else ''
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36',  # noqa
+            'Accept': '*/*',
+            'Accept-Encoding': 'gzip, deflate',
+            'Referer': 'http://tools.rosinstrument.com/raw_free_db.htm',
+        }
+        return headers if not rv else (headers, _rv)
 
 
 class Tools_rosinstrument_com(Tools_rosinstrument_com_base):
