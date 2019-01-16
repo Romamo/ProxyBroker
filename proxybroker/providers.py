@@ -1,3 +1,4 @@
+import random
 import asyncio
 import re
 import warnings
@@ -47,9 +48,10 @@ class Provider:
         # concurrent connections on the current provider
         self._sem_provider = asyncio.Semaphore(max_conn)
         self._loop = loop or asyncio.get_event_loop()
+        self._headers = self.get_headers()
 
     def get_headers(rv=False):
-        return get_headers()
+        return get_headers(rv)
         
     @property
     def proxies(self):
@@ -376,15 +378,17 @@ class Tools_rosinstrument_com_base(Provider):
         page = unescape(fromCharCodes)
         return self._find_proxies(page)
     
-    def get_headers(rv=False):
-        _rv = str(random.randint(1000, 9999)) if rv else ''
+    def get_headers(rv=True):
         headers = {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36',  # noqa
             'Accept': '*/*',
             'Accept-Encoding': 'gzip, deflate',
+            'Pragma': 'no-cache',
+            'Cache-control': 'no-cache',
+            'Accept-Encoding': 'gzip, deflate',
             'Referer': 'http://tools.rosinstrument.com/raw_free_db.htm',
         }
-        return headers if not rv else (headers, _rv)
+        return headers
 
 
 class Tools_rosinstrument_com(Tools_rosinstrument_com_base):
