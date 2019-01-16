@@ -11,10 +11,7 @@ import aiohttp
 import async_timeout
 
 from .errors import BadStatusError
-from .utils import log, 
-
-
-, IPPattern, IPPortPatternGlobal
+from .utils import log, get_headers, IPPattern, IPPortPatternGlobal
 
 
 class Provider:
