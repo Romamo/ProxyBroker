@@ -101,6 +101,9 @@ class Proxy:
                code=self._geo.code, types=tpinfo, host=self.host,
                port=self.port, avg=self.avg_resp_time)
 
+    def __lt__(self, b):
+        return self.priority < b.priority
+
     @property
     def types(self):
         """Types (protocols) supported by the proxy.
